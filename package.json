@@ -1,0 +1,13 @@
+{
+  "name": "docker-mongodb-notes",
+  "version": "1.0.0",
+  "description": "Notes API using Node.js, MongoDB and Docker",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js"
+  },
+  "dependencies": {
+    "express": "^4.21.2",
+    "mongoose": "^8.9.5"
+  }
+}

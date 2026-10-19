@@ -1,0 +1,60 @@
+services:
+  mongodb:
+    image: mongo:8
+    container_name: notes-mongodb
+    restart: unless-stopped
+
+    environment:
+      MONGO_INITDB_DATABASE: notesdb
+
+    volumes:
+      - mongodb_data:/data/db
+
+    networks:
+      - notes-network
+
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "mongosh",
+          "--quiet",
+          "--eval",
+          "db.adminCommand('ping').ok"
+        ]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+      start_period: 10s
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+
+    image: notes-api:${GIT_SHA:-dev}
+
+    container_name: notes-api
+
+    restart: unless-stopped
+
+    environment:
+      PORT: 3000
+      MONGO_URI: mongodb://mongodb:27017/notesdb
+
+    ports:
+      - "3000:3000"
+
+    depends_on:
+      mongodb:
+        condition: service_healthy
+
+    networks:
+      - notes-network
+
+networks:
+  notes-network:
+    driver: bridge
+
+volumes:
+  mongodb_data:
