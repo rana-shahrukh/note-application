@@ -11,6 +11,9 @@ RUN npm install --omit=dev
 # Stage 2: Create the runtime image
 FROM node:22-alpine AS runtime
 
+ARG GIT_SHA=dev
+LABEL org.opencontainers.image.revision=$GIT_SHA
+
 ENV NODE_ENV=production
 
 WORKDIR /app
