@@ -93,6 +93,15 @@ app.post("/api/notes", async (req, res, next) => {
     }
 });
 
+
+//  For hello world
+
+
+app.post("/hello", (req, res) => {
+  res.send("Hello World!");
+});
+
+
 // Get a specific note
 app.get("/api/notes/:id", async (req, res, next) => {
     try {
